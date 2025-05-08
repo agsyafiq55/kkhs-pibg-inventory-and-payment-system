@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClassRooms\ClassRoomController;
+use App\Http\Controllers\Students\StudentController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -19,6 +21,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+    
+    // Admin Routes
+    Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+        // Student Routes
+        Route::prefix('students')->name('students.')->group(function () {
+            Route::get('/', [StudentController::class, 'index'])->name('index');
+            Route::get('/create', [StudentController::class, 'create'])->name('create');
+            Route::get('/{student}', [StudentController::class, 'show'])->name('show');
+            Route::get('/{student}/edit', [StudentController::class, 'edit'])->name('edit');
+        });
+        
+        // ClassRoom Routes
+        Route::prefix('classrooms')->name('classrooms.')->group(function () {
+            Route::get('/', [ClassRoomController::class, 'index'])->name('index');
+            Route::get('/create', [ClassRoomController::class, 'create'])->name('create');
+            Route::get('/{classroom}', [ClassRoomController::class, 'show'])->name('show');
+            Route::get('/{classroom}/edit', [ClassRoomController::class, 'edit'])->name('edit');
+        });
+    });
 });
 
 require __DIR__.'/auth.php';
