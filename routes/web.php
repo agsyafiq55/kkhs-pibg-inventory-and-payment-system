@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ClassRooms\ClassRoomController;
+use App\Http\Controllers\Items\ItemController;
+use App\Http\Controllers\Items\SupplierController;
 use App\Http\Controllers\Students\StudentController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -38,6 +40,36 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create', [ClassRoomController::class, 'create'])->name('create');
             Route::get('/{classroom}', [ClassRoomController::class, 'show'])->name('show');
             Route::get('/{classroom}/edit', [ClassRoomController::class, 'edit'])->name('edit');
+        });
+        
+        // Item Routes
+        Route::prefix('items')->name('items.')->group(function () {
+            Route::get('/', [ItemController::class, 'index'])->name('index');
+            Route::get('/create', [ItemController::class, 'create'])->name('create');
+            Route::get('/{item}', [ItemController::class, 'show'])->name('show');
+            Route::get('/{item}/edit', [ItemController::class, 'edit'])->name('edit');
+            
+            // Variant Routes (nested under items)
+            Route::name('variants.')->group(function () {
+                Route::get('/{item}/variants/create', function ($item) {
+                    return view('admin.items.variant-form', ['item' => App\Models\Item::findOrFail($item)]);
+                })->name('create');
+                
+                Route::get('/{item}/variants/{variant}/edit', function ($item, $variant) {
+                    return view('admin.items.variant-form', [
+                        'item' => App\Models\Item::findOrFail($item),
+                        'variant' => App\Models\ItemVariant::findOrFail($variant)
+                    ]);
+                })->name('edit');
+            });
+        });
+        
+        // Supplier Routes
+        Route::prefix('suppliers')->name('suppliers.')->group(function () {
+            Route::get('/', [SupplierController::class, 'index'])->name('index');
+            Route::get('/create', [SupplierController::class, 'create'])->name('create');
+            Route::get('/{supplier}', [SupplierController::class, 'show'])->name('show');
+            Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
         });
     });
 });
