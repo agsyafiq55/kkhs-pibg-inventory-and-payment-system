@@ -29,8 +29,8 @@ class VariantForm extends Component
     public $suppliers;
     
     protected $rules = [
-        'color_id' => 'required',
-        'size_id' => 'required',
+        'color_id' => 'nullable',
+        'size_id' => 'nullable',
         'supplier_id' => 'nullable|exists:suppliers,supplier_id',
         'barcode' => 'nullable|string|max:255',
         'stock' => 'required|integer|min:0',
@@ -92,8 +92,8 @@ class VariantForm extends Component
         $this->validate();
         
         $this->variant->items_id = $this->items_id;
-        $this->variant->color_id = $this->color_id;
-        $this->variant->size_id = $this->size_id;
+        $this->variant->color_id = $this->color_id ?: null;
+        $this->variant->size_id = $this->size_id ?: null;
         $this->variant->supplier_id = $this->supplier_id;
         
         if (!empty($this->barcode)) {

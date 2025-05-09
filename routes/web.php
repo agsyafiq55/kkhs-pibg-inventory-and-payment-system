@@ -71,6 +71,23 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{supplier}', [SupplierController::class, 'show'])->name('show');
             Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
         });
+
+        // Package Routes
+        Route::prefix('packages')->name('packages.')->middleware(['auth'])->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\PackageController::class, 'index'])->name('index');
+            Route::get('/create', [App\Http\Controllers\Admin\PackageController::class, 'create'])->name('create');
+            Route::get('/{package}', [App\Http\Controllers\Admin\PackageController::class, 'show'])->name('show');
+            Route::get('/{package}/edit', [App\Http\Controllers\Admin\PackageController::class, 'edit'])->name('edit');
+            
+            // Package Items Routes
+            Route::get('/{package}/items/create', function (App\Models\Package $package) {
+                return view('admin.packages.items.create', compact('package'));
+            })->name('items.create');
+            
+            Route::get('/{package}/items/{item}/edit', function (App\Models\Package $package, App\Models\PackageItem $item) {
+                return view('admin.packages.items.edit', compact('package', 'item'));
+            })->name('items.edit');
+        });
     });
 });
 
