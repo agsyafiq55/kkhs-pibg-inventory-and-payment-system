@@ -9,7 +9,7 @@
                     <select id="color_id" wire:model="color_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <option value="">Select a color</option>
                         @foreach($colors as $color)
-                            <option value="{{ $color->color_id }}">{{ $color->color_name }}</option>
+                            <option value="{{ $color['color_id'] }}">{{ $color['color_name'] }}</option>
                         @endforeach
                     </select>
                     @error('color_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
@@ -20,7 +20,7 @@
                     <select id="size_id" wire:model="size_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <option value="">Select a size</option>
                         @foreach($sizes as $size)
-                            <option value="{{ $size->size_id }}">{{ $size->size_label }}</option>
+                            <option value="{{ $size['size_id'] }}">{{ $size['size_label'] }}</option>
                         @endforeach
                     </select>
                     @error('size_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror

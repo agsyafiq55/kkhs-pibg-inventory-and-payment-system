@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Admin\Items;
 
-use App\Models\Color;
 use App\Models\Item;
 use App\Models\ItemVariant;
-use App\Models\Size;
 use App\Models\Supplier;
 use Livewire\Component;
 
@@ -31,8 +29,8 @@ class VariantForm extends Component
     public $suppliers;
     
     protected $rules = [
-        'color_id' => 'nullable|exists:colors,color_id',
-        'size_id' => 'nullable|exists:sizes,size_id',
+        'color_id' => 'required',
+        'size_id' => 'required',
         'supplier_id' => 'nullable|exists:suppliers,supplier_id',
         'barcode' => 'nullable|string|max:255',
         'stock' => 'required|integer|min:0',
@@ -44,8 +42,28 @@ class VariantForm extends Component
         $this->item = $item;
         $this->items_id = $item->items_id;
         
-        $this->colors = Color::orderBy('color_name')->get();
-        $this->sizes = Size::orderBy('size_label')->get();
+        // Hardcoded colors and sizes as requested
+        $this->colors = [
+            ['color_id' => 1, 'color_name' => 'RED'],
+            ['color_id' => 2, 'color_name' => 'YELLOW'],
+            ['color_id' => 3, 'color_name' => 'PURPLE'],
+            ['color_id' => 4, 'color_name' => 'BLUE'],
+            ['color_id' => 5, 'color_name' => 'GREEN'],
+            ['color_id' => 6, 'color_name' => 'ORANGE'],
+        ];
+        
+        $this->sizes = [
+            ['size_id' => 1, 'size_label' => '2XS'],
+            ['size_id' => 2, 'size_label' => 'XS'],
+            ['size_id' => 3, 'size_label' => 'S'],
+            ['size_id' => 4, 'size_label' => 'M'],
+            ['size_id' => 5, 'size_label' => 'L'],
+            ['size_id' => 6, 'size_label' => 'XL'],
+            ['size_id' => 7, 'size_label' => '2XL'],
+            ['size_id' => 8, 'size_label' => '3XL'],
+            ['size_id' => 9, 'size_label' => '4XL'],
+        ];
+        
         $this->suppliers = Supplier::orderBy('supplier_name')->get();
         
         if ($variant) {

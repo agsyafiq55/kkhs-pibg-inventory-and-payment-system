@@ -72,9 +72,9 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ number_format($variant->price, 2) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <a href="{{ route('admin.items.show', $variant->items_id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
-                                    View Item
+                                    View
                                 </a>
-                                <button type="button" onclick="printBarcode('{{ $variant->barcode }}', '{{ addslashes($variant->item->name) }}')" class="text-blue-500 hover:text-blue-700 block mt-1">
+                                <button type="button" onclick="printBarcode('{{ $variant->barcode }}', '{{ addslashes($variant->item->name) }}')" class="text-yellow-500 hover:text-yellow-700 block mt-1">
                                     Print Barcode
                                 </button>
                             </td>
