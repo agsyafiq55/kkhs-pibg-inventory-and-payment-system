@@ -1,17 +1,8 @@
 <x-layouts.app>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Supplier Management') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <livewire:admin.suppliers.supplier-list />
-                </div>
-            </div>
-        </div>
+    <div class="relative mb-6 w-full">
+        <flux:heading size="xl" level="1">{{ __('Supplier Management') }}</flux:heading>
+        <flux:subheading size="lg" class="mb-6">{{ __('Manage suppliers and their information') }}</flux:subheading>
+        <flux:separator variant="subtle" />
     </div>
-</x-layouts.app> 
+    <livewire:admin.suppliers.supplier-list />
+</x-layouts.app>

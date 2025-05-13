@@ -59,11 +59,11 @@
                         <tr data-barcode="{{ $variant->barcode }}">
                             <td class="px-6 py-4 whitespace-nowrap">{{ $variant->item->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="space-y-1">
-                                    <span>{{ $variant->barcode }}</span>
+                                <div class="flex flex-col items-center space-y-2">
                                     <div class="barcode-container">
                                         {!! $variant->barcode_image !!}
                                     </div>
+                                    <span>{{ $variant->barcode }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $variant->color->color_name ?? 'N/A' }}</td>

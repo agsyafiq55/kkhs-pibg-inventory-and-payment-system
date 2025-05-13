@@ -19,6 +19,7 @@
                     <flux:navlist.item icon="shopping-bag" :href="route('admin.items.index')" :current="request()->routeIs('admin.items.*')" wire:navigate>{{ __('Inventory') }}</flux:navlist.item>
                     <flux:navlist.item icon="building-storefront" :href="route('admin.suppliers.index')" :current="request()->routeIs('admin.suppliers.*')" wire:navigate>{{ __('Suppliers') }}</flux:navlist.item>
                     <flux:navlist.item icon="archive-box" :href="route('admin.packages.index')" :current="request()->routeIs('admin.packages.*')" wire:navigate>{{ __('Packages') }}</flux:navlist.item>
+                    <flux:navlist.item icon="currency-dollar" :href="route('admin.payments.index')" :current="request()->routeIs('admin.payments.*')" wire:navigate>{{ __('Payments') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

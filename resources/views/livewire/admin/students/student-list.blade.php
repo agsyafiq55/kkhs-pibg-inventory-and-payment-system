@@ -15,15 +15,15 @@
     </div>
 
     @if (session()->has('message'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-            {{ session('message') }}
-        </div>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+        {{ session('message') }}
+    </div>
     @endif
 
     @if (session()->has('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-            {{ session('error') }}
-        </div>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        {{ session('error') }}
+    </div>
     @endif
 
     <div class="overflow-x-auto">
@@ -39,27 +39,27 @@
             </thead>
             <tbody>
                 @forelse ($students as $student)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->ic_no }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->form }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->classroom->class_name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                            <a href="{{ route('admin.students.show', $student->student_id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
-                                View
-                            </a>
-                            <a href="{{ route('admin.students.edit', $student->student_id) }}" class="text-yellow-500 hover:text-yellow-700 mr-2">
-                                Edit
-                            </a>
-                            <button wire:click="deleteStudent({{ $student->student_id }})" wire:confirm="Are you sure you want to delete this student?" class="text-red-500 hover:text-red-700">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->ic_no }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->form }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->classroom->class_name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
+                        <a href="{{ route('admin.students.show', $student->student_id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
+                            View
+                        </a>
+                        <a href="{{ route('admin.students.edit', $student->student_id) }}" class="text-yellow-500 hover:text-yellow-700 mr-2">
+                            Edit
+                        </a>
+                        <button wire:click="deleteStudent({{ $student->student_id }})" wire:confirm="Are you sure you want to delete this student?" class="text-red-500 hover:text-red-700">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-center">No students found.</td>
-                    </tr>
+                <tr>
+                    <td colspan="5" class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-center">No students found.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
@@ -68,4 +68,4 @@
     <div class="mt-4">
         {{ $students->links() }}
     </div>
-</div> 
+</div>

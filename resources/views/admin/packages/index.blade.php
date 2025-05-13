@@ -1,13 +1,8 @@
 <x-layouts.app>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Packages Management') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <livewire:admin.packages.package-list />
-        </div>
+    <div class="relative mb-6 w-full">
+        <flux:heading size="xl" level="1">{{ __('Packages Management') }}</flux:heading>
+        <flux:subheading size="lg" class="mb-6">{{ __('Manage packages and their information') }}</flux:subheading>
+        <flux:separator variant="subtle" />
     </div>
-</x-layouts.app> 
+    <livewire:admin.packages.package-list />
+</x-layouts.app>

@@ -63,7 +63,7 @@
                 </div>
                 <div class="mt-4 flex justify-between items-center">
                     <span class="text-lg font-bold text-gray-900 dark:text-white">Total: RM{{ number_format($package->total_price, 2) }}</span>
-                    <flux:button as="a" variant="success" href="{{ route('public.payment', ['studentId' => $student->student_id, 'packageId' => $package->package_id]) }}">
+                    <flux:button as="a" variant="primary" href="{{ route('public.payment', ['studentId' => $student->student_id, 'packageId' => $package->package_id]) }}">
                         Proceed to Payment
                     </flux:button>
                 </div>
