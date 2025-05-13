@@ -15,7 +15,6 @@ class Item extends Model
         'name',
         'item_type',
         'description',
-        'category_id',
         'subject_id',
         'stream_id',
         'form',

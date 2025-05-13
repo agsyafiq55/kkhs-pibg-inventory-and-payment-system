@@ -19,7 +19,6 @@ class ItemForm extends Component
     public $name;
     public $item_type = 'School Supply';
     public $description;
-    public $category_id;
     public $subject_id;
     public $stream_id;
     public $form;
@@ -43,11 +42,13 @@ class ItemForm extends Component
     public $streams;
     public $forms = [1, 2, 3, 4, 5];
     
+    // Store variants when switching to Book type
+    private $storedVariants = [];
+    
     protected $rules = [
         'name' => 'required|string|max:255',
         'item_type' => 'required|in:Book,School Supply',
         'description' => 'nullable|string',
-        'category_id' => 'nullable|string|max:255',
         'subject_id' => 'nullable|required_if:item_type,Book|exists:subjects,subject_id',
         'stream_id' => 'nullable|exists:streams,stream_id',
         'form' => 'nullable|required_if:item_type,Book',
@@ -103,7 +104,6 @@ class ItemForm extends Component
         $this->name = $this->item->name;
         $this->item_type = $this->item->item_type;
         $this->description = $this->item->description;
-        $this->category_id = $this->item->category_id;
         $this->subject_id = $this->item->subject_id;
         $this->stream_id = $this->item->stream_id;
         $this->form = $this->item->form;
@@ -154,7 +154,42 @@ class ItemForm extends Component
     {
         // If type is Book, variants typically don't apply
         if ($this->item_type === 'Book') {
+            // Store the current variants for later use
+            if (!empty($this->variants)) {
+                $this->storedVariants = $this->variants;
+            }
             $this->has_variants = false;
+        } else if ($this->item_type === 'School Supply') {
+            // Default to having variants for School Supplies
+            $this->has_variants = true;
+            
+            // Restore variants if available, otherwise add a new one
+            if (!empty($this->storedVariants)) {
+                $this->variants = $this->storedVariants;
+            } else if (empty($this->variants)) {
+                $this->addVariant();
+            }
+        }
+    }
+    
+    // Auto-generate book name when form or subject changes
+    public function updatedSubjectId()
+    {
+        $this->updateBookName();
+    }
+    
+    public function updatedForm()
+    {
+        $this->updateBookName();
+    }
+    
+    private function updateBookName()
+    {
+        if ($this->item_type === 'Book' && $this->subject_id && $this->form) {
+            $subject = Subject::find($this->subject_id);
+            if ($subject) {
+                $this->name = $subject->subject_name . ' FORM ' . $this->form;
+            }
         }
     }
     
@@ -162,10 +197,17 @@ class ItemForm extends Component
     {
         $this->validate();
         
+        // Auto-update book name before saving
+        if ($this->item_type === 'Book' && $this->subject_id && $this->form) {
+            $subject = Subject::find($this->subject_id);
+            if ($subject) {
+                $this->name = $subject->subject_name . ' FORM ' . $this->form;
+            }
+        }
+        
         $this->item->name = $this->name;
         $this->item->item_type = $this->item_type;
         $this->item->description = $this->description;
-        $this->item->category_id = $this->category_id;
         $this->item->has_variants = $this->has_variants;
         
         // Subject, stream, and form are only relevant for books

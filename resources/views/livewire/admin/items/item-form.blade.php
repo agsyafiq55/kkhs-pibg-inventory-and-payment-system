@@ -57,19 +57,21 @@
             
             <!-- Basic Details -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+                <!-- Name field: readonly for books, editable for school supplies -->
+                <div class="md:col-span-2">
                     <flux:field>
                         <flux:label for="name">Name <span class="text-red-500">*</span></flux:label>
-                        <flux:input id="name" wire:model="name" placeholder="Enter item name" />
+                        <flux:input 
+                            id="name" 
+                            wire:model="name" 
+                            placeholder="Enter item name" 
+                            readonly="{{ $item_type === 'Book' ? 'readonly' : false }}"
+                            class="{{ $item_type === 'Book' ? 'bg-gray-100' : '' }}"
+                        />
+                        @if($item_type === 'Book')
+                            <span class="text-sm text-gray-500">Name will be auto-generated based on subject and form</span>
+                        @endif
                         <flux:error name="name" />
-                    </flux:field>
-                </div>
-
-                <div>
-                    <flux:field>
-                        <flux:label for="category_id">Category <span class="text-red-500">*</span></flux:label>
-                        <flux:input id="category_id" wire:model="category_id" placeholder="Enter item category" />
-                        <flux:error name="category_id" />
                     </flux:field>
                 </div>
 
@@ -91,7 +93,7 @@
                 <div>
                     <flux:field>
                         <flux:label for="subject_id">Subject <span class="text-red-500">*</span></flux:label>
-                        <flux:select id="subject_id" wire:model="subject_id">
+                        <flux:select id="subject_id" wire:model.live="subject_id">
                             <flux:select.option value="">Select a subject</flux:select.option>
                             @foreach($subjects as $subject)
                             <flux:select.option value="{{ $subject->subject_id }}">{{ $subject->subject_name }}</flux:select.option>
@@ -104,7 +106,7 @@
                 <div>
                     <flux:field>
                         <flux:label for="form">Form <span class="text-red-500">*</span></flux:label>
-                        <flux:select id="form" wire:model="form">
+                        <flux:select id="form" wire:model.live="form">
                             <flux:select.option value="">Select a form</flux:select.option>
                             @foreach($forms as $formOption)
                             <flux:select.option value="{{ $formOption }}">Form {{ $formOption }}</flux:select.option>
