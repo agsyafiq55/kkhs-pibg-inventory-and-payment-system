@@ -4,6 +4,7 @@ use App\Http\Controllers\ClassRooms\ClassRoomController;
 use App\Http\Controllers\Items\ItemController;
 use App\Http\Controllers\Items\SupplierController;
 use App\Http\Controllers\Students\StudentController;
+use App\Livewire\Public\PaymentProcessor;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -12,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+// Public Routes
+Route::prefix('public')->name('public.')->group(function () {
+    Route::get('/payment/{studentId}/{packageId}', function ($studentId, $packageId) {
+        return view('public.payment', compact('studentId', 'packageId'));
+    })->name('payment');
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -73,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Package Routes
-        Route::prefix('packages')->name('packages.')->middleware(['auth'])->group(function () {
+        Route::prefix('packages')->name('packages.')->group(function () {
             Route::get('/', [App\Http\Controllers\Admin\PackageController::class, 'index'])->name('index');
             Route::get('/create', [App\Http\Controllers\Admin\PackageController::class, 'create'])->name('create');
             Route::get('/{package}', [App\Http\Controllers\Admin\PackageController::class, 'show'])->name('show');
@@ -87,6 +95,14 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{package}/items/{item}/edit', function (App\Models\Package $package, App\Models\PackageItem $item) {
                 return view('admin.packages.items.edit', compact('package', 'item'));
             })->name('items.edit');
+        });
+        
+        // Payment Routes
+        Route::prefix('payments')->name('payments.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('index');
+            Route::get('/create', [App\Http\Controllers\Admin\PaymentController::class, 'create'])->name('create');
+            Route::get('/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('show');
+            Route::get('/{payment}/edit', [App\Http\Controllers\Admin\PaymentController::class, 'edit'])->name('edit');
         });
     });
 });
