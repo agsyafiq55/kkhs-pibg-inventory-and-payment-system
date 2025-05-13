@@ -22,6 +22,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        // Call other seeders
+        $this->call([
+            SubjectSeeder::class,
+            StreamSeeder::class,
+            ClassroomSeeder::class,
+        ]);
+
         // Seed colors
         $colors = [
             ['color_id' => 1, 'color_name' => 'RED'],
