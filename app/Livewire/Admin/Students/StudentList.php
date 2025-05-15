@@ -56,7 +56,9 @@ class StudentList extends Component
         }
         
         if (!empty($this->formFilter)) {
-            $query->where('form', $this->formFilter);
+            $query->whereHas('classroom', function($q) {
+                $q->where('form', $this->formFilter);
+            });
         }
         
         if (!empty($this->classFilter)) {
@@ -66,7 +68,7 @@ class StudentList extends Component
         $students = $query->orderBy('name')
             ->paginate($this->perPage);
         
-        $forms = Student::distinct()->pluck('form')->sort()->toArray();
+        $forms = Classroom::distinct()->pluck('form')->sort()->toArray();
         $classes = Classroom::orderBy('class_name')->get();
             
         return view('livewire.admin.students.student-list', [

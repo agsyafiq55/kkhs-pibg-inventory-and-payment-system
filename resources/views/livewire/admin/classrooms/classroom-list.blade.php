@@ -1,8 +1,17 @@
 <div>
     <div class="flex justify-between items-center mb-4">
-        <div>
+        <div class="flex items-center gap-2">
             <input type="text" wire:model.live.debounce.300ms="search" class="px-4 py-2 rounded border" placeholder="Search classes...">
-            <select wire:model.live="perPage" class="px-4 py-2 rounded border ml-2">
+            
+            <flux:field class="w-48 mb-0">
+                <flux:select wire:model.live="selectedYear" class="h-10">
+                    @foreach($availableYears as $year)
+                        <flux:select.option value="{{ $year }}">{{ $year }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+            </flux:field>
+            
+            <select wire:model.live="perPage" class="px-4 py-2 rounded border">
                 <option value="10">10 per page</option>
                 <option value="25">25 per page</option>
                 <option value="50">50 per page</option>
@@ -31,7 +40,7 @@
             <thead>
                 <tr>
                     <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Class Name</th>
-                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Students Count</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Students ({{ $selectedYear }})</th>
                     <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>

@@ -18,8 +18,6 @@ class Student extends Model
         'name',
         'daftar_no',
         'ic_no',
-        'form',
-        'stream',
         'gender',
         'islam',
         'previous_school',
@@ -40,6 +38,39 @@ class Student extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'student_id', 'student_id');
+    }
+    
+    public function classHistory(): HasMany
+    {
+        return $this->hasMany(StudentClassHistory::class, 'student_id', 'student_id');
+    }
+    
+    public function getCurrentClassHistory($year = null)
+    {
+        $year = $year ?? date('Y');
+        
+        return $this->classHistory()
+            ->where('academic_year', $year)
+            ->first();
+    }
+    
+    public function getClassForYear($year = null)
+    {
+        $year = $year ?? date('Y');
+        
+        $classHistory = $this->getCurrentClassHistory($year);
+        
+        return $classHistory ? $classHistory->classroom : null;
+    }
+    
+    public function isInClass($classId, $year = null)
+    {
+        $year = $year ?? date('Y');
+        
+        return $this->classHistory()
+            ->where('class_id', $classId)
+            ->where('academic_year', $year)
+            ->exists();
     }
     
     public function hasPaymentForPackage(int $packageId): bool

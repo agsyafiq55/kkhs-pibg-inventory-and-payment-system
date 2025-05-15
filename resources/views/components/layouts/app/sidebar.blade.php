@@ -14,12 +14,19 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                    <flux:navlist.item icon="academic-cap" :href="route('admin.students.index')" :current="request()->routeIs('admin.students.*')" wire:navigate>{{ __('Students') }}</flux:navlist.item>
-                    <flux:navlist.item icon="squares-2x2" :href="route('admin.classrooms.index')" :current="request()->routeIs('admin.classrooms.*')" wire:navigate>{{ __('Classes') }}</flux:navlist.item>
                     <flux:navlist.item icon="shopping-bag" :href="route('admin.items.index')" :current="request()->routeIs('admin.items.*')" wire:navigate>{{ __('Inventory') }}</flux:navlist.item>
                     <flux:navlist.item icon="building-storefront" :href="route('admin.suppliers.index')" :current="request()->routeIs('admin.suppliers.*')" wire:navigate>{{ __('Suppliers') }}</flux:navlist.item>
                     <flux:navlist.item icon="archive-box" :href="route('admin.packages.index')" :current="request()->routeIs('admin.packages.*')" wire:navigate>{{ __('Packages') }}</flux:navlist.item>
                     <flux:navlist.item icon="currency-dollar" :href="route('admin.payments.index')" :current="request()->routeIs('admin.payments.*')" wire:navigate>{{ __('Payments') }}</flux:navlist.item>
+                </flux:navlist.group>
+            </flux:navlist>
+
+            <!-- Subjects -->
+            <flux:navlist variant="outline">
+                <flux:navlist.group :heading="__('Student and Class Management')" class="grid">
+                    <flux:navlist.item icon="squares-2x2" :href="route('admin.classrooms.index')" :current="request()->routeIs('admin.classrooms.*')" wire:navigate>{{ __('Classes & Students') }}</flux:navlist.item>
+                    <flux:navlist.item icon="book-open" :href="route('admin.subjects.index')" :current="request()->routeIs('admin.subjects.*')" wire:navigate>{{ __('Subjects') }}</flux:navlist.item>
+                    <flux:navlist.item icon="tag" :href="route('admin.streams.index')" :current="request()->routeIs('admin.streams.*')" wire:navigate>{{ __('Streams') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

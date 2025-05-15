@@ -42,8 +42,8 @@
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->name }}</td>
                     <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->ic_no }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->form }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->classroom->class_name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->classroom->form ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $student->classroom->class_name ?? 'N/A' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                         <a href="{{ route('admin.students.show', $student->student_id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
                             View

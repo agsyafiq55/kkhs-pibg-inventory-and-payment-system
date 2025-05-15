@@ -16,13 +16,13 @@ class ClassroomSeeder extends Seeder
         $classNames = [
             'AMANAH',
             'BESTARI',
+            'CERIA',
             'DINAMIK',
             'KREATIF',
-            'TEKUN',
-            'RAJIN',
             'MULIA',
+            'RAJIN',
             'SABAR',
-            'CERIA'
+            'TEKUN'
         ];
 
         $forms = [1, 2, 3, 4, 5];

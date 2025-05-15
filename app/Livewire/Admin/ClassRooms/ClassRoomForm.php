@@ -12,10 +12,15 @@ class ClassRoomForm extends Component
     public $editing = false;
     
     // Form fields
-    public $class_name;
+    public $class_name = '';
+    public $form = '';
+    public $stream = '';
+    public $full_class_name = '';
     
     protected $rules = [
         'class_name' => 'required|string|max:255',
+        'form' => 'required|string|max:255',
+        'stream' => 'nullable|string|max:255',
     ];
     
     public function mount($classroom = null)
@@ -32,13 +37,41 @@ class ClassRoomForm extends Component
     private function fillFormFields()
     {
         $this->class_name = $this->classroom->class_name;
+        $this->form = $this->classroom->form;
+        $this->stream = $this->classroom->stream;
+        $this->updateFullClassName();
+    }
+    
+    public function updatedForm()
+    {
+        $this->updateFullClassName();
+    }
+    
+    public function updatedClassName()
+    {
+        $this->updateFullClassName();
+    }
+    
+    public function updateFullClassName()
+    {
+        if (!empty($this->form) && !empty($this->class_name)) {
+            $this->full_class_name = $this->form . ' ' . $this->class_name;
+        } else {
+            $this->full_class_name = '';
+        }
     }
     
     public function save()
     {
         $this->validate();
         
-        $this->classroom->class_name = $this->class_name;
+        // Update the full class name one last time to ensure it's current
+        $this->updateFullClassName();
+        
+        // Save the full class name instead of just the class name
+        $this->classroom->class_name = $this->full_class_name;
+        $this->classroom->form = $this->form;
+        $this->classroom->stream = $this->stream;
         
         $this->classroom->save();
         

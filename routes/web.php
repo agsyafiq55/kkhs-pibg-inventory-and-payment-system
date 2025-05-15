@@ -4,6 +4,10 @@ use App\Http\Controllers\ClassRooms\ClassRoomController;
 use App\Http\Controllers\Items\ItemController;
 use App\Http\Controllers\Items\SupplierController;
 use App\Http\Controllers\Students\StudentController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\StreamController;
+use App\Livewire\Admin\ClassRooms\AddStudent;
+use App\Livewire\Admin\ClassRooms\ImportStudents;
 use App\Livewire\Public\PaymentProcessor;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -48,6 +52,15 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create', [ClassRoomController::class, 'create'])->name('create');
             Route::get('/{classroom}', [ClassRoomController::class, 'show'])->name('show');
             Route::get('/{classroom}/edit', [ClassRoomController::class, 'edit'])->name('edit');
+            
+            // New routes for student management in classroom
+            Route::get('/{classroom}/import-students', function (App\Models\Classroom $classroom) {
+                return view('admin.classrooms.import-students', compact('classroom'));
+            })->name('import-students');
+            
+            Route::get('/{classroom}/add-student', function (App\Models\Classroom $classroom) {
+                return view('admin.classrooms.add-student', compact('classroom'));
+            })->name('add-student');
         });
         
         // Item Routes
@@ -70,6 +83,14 @@ Route::middleware(['auth'])->group(function () {
                     ]);
                 })->name('edit');
             });
+        });
+        
+        // Stream Routes
+        Route::prefix('streams')->name('streams.')->group(function () {
+            Route::get('/', [StreamController::class, 'index'])->name('index');
+            Route::get('/create', [StreamController::class, 'create'])->name('create');
+            Route::get('/{stream}', [StreamController::class, 'show'])->name('show');
+            Route::get('/{stream}/edit', [StreamController::class, 'edit'])->name('edit');
         });
         
         // Supplier Routes
@@ -103,6 +124,14 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create', [App\Http\Controllers\Admin\PaymentController::class, 'create'])->name('create');
             Route::get('/{payment}', [App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('show');
             Route::get('/{payment}/edit', [App\Http\Controllers\Admin\PaymentController::class, 'edit'])->name('edit');
+        });
+
+        // Subject Routes
+        Route::prefix('subjects')->name('subjects.')->group(function () {
+            Route::get('/', [SubjectController::class, 'index'])->name('index');
+            Route::get('/create', [SubjectController::class, 'create'])->name('create');
+            Route::get('/{subject}', [SubjectController::class, 'show'])->name('show');
+            Route::get('/{subject}/edit', [SubjectController::class, 'edit'])->name('edit');
         });
     });
 });

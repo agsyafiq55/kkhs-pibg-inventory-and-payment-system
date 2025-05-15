@@ -21,16 +21,51 @@
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $classroom->class_name }}</dd>
                 </div>
                 <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">Total Students</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $students->total() }}</dd>
+                    <dt class="text-sm font-medium text-gray-500">Students ({{ $academic_year }})</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $classroom->getStudentCountForYear($academic_year) }}</dd>
                 </div>
             </dl>
         </div>
     </div>
     
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="flex justify-between items-center px-4 py-5 border-b border-gray-200 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Student Management</h3>
+            <div class="flex space-x-3">
+                <a href="{{ route('admin.classrooms.add-student', $classroom->class_id) }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    Add Student
+                </a>
+                <a href="{{ route('admin.classrooms.import-students', $classroom->class_id) }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Import Students from CSV
+                </a>
+            </div>
+        </div>
+        <div class="p-4 bg-gray-50">
+            <flux:callout icon="information-circle">
+                <flux:callout.heading>Viewing Students by Academic Year</flux:callout.heading>
+                <flux:callout.text>
+                    Select an academic year to view students assigned to this class for that year.
+                </flux:callout.text>
+            </flux:callout>
+            
+            <div class="mt-4 flex items-center space-x-2">
+                <flux:field class="w-48">
+                    <flux:label for="academic_year">Academic Year</flux:label>
+                    <flux:select id="academic_year" wire:change="setAcademicYear($event.target.value)" wire:model="academic_year">
+                        @foreach($availableYears as $year)
+                            <flux:select.option value="{{ $year }}">{{ $year }}</flux:select.option>
+                        @endforeach
+                    </flux:select>
+                </flux:field>
+            </div>
+        </div>
+    </div>
+    
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
         <div class="flex justify-between items-center px-4 py-5 border-b border-gray-200 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Students in this class</h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Students in {{ $classroom->class_name }} for {{ $academic_year }}
+            </h3>
             <div>
                 <input type="text" wire:model.live.debounce.300ms="search" class="px-4 py-2 rounded border" placeholder="Search students...">
             </div>
@@ -60,7 +95,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">No students in this class.</td>
+                            <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                                No students in this class for the selected academic year.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
