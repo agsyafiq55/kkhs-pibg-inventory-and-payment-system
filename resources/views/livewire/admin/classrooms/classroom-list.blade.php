@@ -1,16 +1,34 @@
 <div>
     <div class="flex justify-between items-center mb-4">
-        <div class="flex items-center gap-2">
-            <input type="text" wire:model.live.debounce.300ms="search" class="px-4 py-2 rounded border" placeholder="Search classes...">
-            
+        <div class="flex items-center gap-2 flex-wrap">
+            <flux:input type="text" wire:model.live.debounce.300ms="search" placeholder="Search classes..." />
+
             <flux:field class="w-48 mb-0">
                 <flux:select wire:model.live="selectedYear" class="h-10">
                     @foreach($availableYears as $year)
-                        <flux:select.option value="{{ $year }}">{{ $year }}</flux:select.option>
+                    <flux:select.option value="{{ $year }}">{{ $year }}</flux:select.option>
                     @endforeach
                 </flux:select>
             </flux:field>
-            
+
+            <flux:field class="w-48 mb-0">
+                <flux:select wire:model.live="selectedClassName" class="h-10" placeholder="Filter by class...">
+                    <flux:select.option value="">All Classes</flux:select.option>
+                    @foreach($classNames as $className)
+                    <flux:select.option value="{{ $className }}">{{ $className }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+            </flux:field>
+
+            <flux:field class="w-48 mb-0">
+                <flux:select wire:model.live="selectedForm" class="h-10" placeholder="Filter by form...">
+                    <flux:select.option value="">All Forms</flux:select.option>
+                    @foreach($forms as $form)
+                    <flux:select.option value="{{ $form }}">Form {{ $form }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+            </flux:field>
+
             <select wire:model.live="perPage" class="px-4 py-2 rounded border">
                 <option value="10">10 per page</option>
                 <option value="25">25 per page</option>
@@ -24,18 +42,21 @@
     </div>
 
     @if (session()->has('message'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-            {{ session('message') }}
-        </div>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+        {{ session('message') }}
+    </div>
     @endif
 
     @if (session()->has('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-            {{ session('error') }}
-        </div>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        {{ session('error') }}
+    </div>
     @endif
 
     <div class="overflow-x-auto">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+            Showing Classes for {{ $selectedYear }}
+        </h3>
         <table class="min-w-full bg-white border">
             <thead>
                 <tr>
@@ -46,25 +67,25 @@
             </thead>
             <tbody>
                 @forelse ($classrooms as $classroom)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $classroom->class_name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $classroom->students_count }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
-                            <a href="{{ route('admin.classrooms.show', $classroom->class_id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
-                                View
-                            </a>
-                            <a href="{{ route('admin.classrooms.edit', $classroom->class_id) }}" class="text-yellow-500 hover:text-yellow-700 mr-2">
-                                Edit
-                            </a>
-                            <button wire:click="deleteClassroom({{ $classroom->class_id }})" wire:confirm="Are you sure you want to delete this class?" class="text-red-500 hover:text-red-700">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $classroom->full_class_name ?: $classroom->class_name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">{{ $classroom->students_count }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b border-gray-200">
+                        <a href="{{ route('admin.classrooms.show', $classroom->class_id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
+                            View
+                        </a>
+                        <a href="{{ route('admin.classrooms.edit', $classroom->class_id) }}" class="text-yellow-500 hover:text-yellow-700 mr-2">
+                            Edit
+                        </a>
+                        <button wire:click="deleteClassroom({{ $classroom->class_id }})" wire:confirm="Are you sure you want to delete this class?" class="text-red-500 hover:text-red-700">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="3" class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-center">No classes found.</td>
-                    </tr>
+                <tr>
+                    <td colspan="3" class="px-6 py-4 whitespace-nowrap border-b border-gray-200 text-center">No classes found.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
@@ -73,4 +94,4 @@
     <div class="mt-4">
         {{ $classrooms->links() }}
     </div>
-</div> 
+</div>

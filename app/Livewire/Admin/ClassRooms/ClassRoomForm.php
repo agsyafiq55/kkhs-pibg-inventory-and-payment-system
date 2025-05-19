@@ -68,10 +68,12 @@ class ClassRoomForm extends Component
         // Update the full class name one last time to ensure it's current
         $this->updateFullClassName();
         
-        // Save the full class name instead of just the class name
-        $this->classroom->class_name = $this->full_class_name;
+        // Set individual properties
+        $this->classroom->class_name = $this->class_name;
         $this->classroom->form = $this->form;
         $this->classroom->stream = $this->stream;
+        
+        // The full_class_name will be set by the model's boot method
         
         $this->classroom->save();
         

@@ -17,7 +17,20 @@ class Classroom extends Model
         'class_name',
         'form',
         'stream',
+        'full_class_name',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($classroom) {
+            // Automatically set full_class_name when form and class_name are available
+            if (!empty($classroom->form) && !empty($classroom->class_name)) {
+                $classroom->full_class_name = $classroom->form . ' ' . $classroom->class_name;
+            }
+        });
+    }
 
     public function students()
     {
